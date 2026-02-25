@@ -1,6 +1,6 @@
-# 📈 TimeSeries AI — Asistente RAG de Series Temporales
+# 📈 Opos AI — Asistente RAG de Opisicones de Música
 
-Réplica del sistema [timeseries-ai.es](https://timeseries-ai.es/): un chatbot RAG (Retrieval-Augmented Generation) que responde preguntas sobre Series Temporales usando los apuntes del curso.
+Un chatbot RAG (Retrieval-Augmented Generation) que responde preguntas sobre Oposiciones de Musica usando apuntes subidos
 
 ## 🏗️ Arquitectura
 
