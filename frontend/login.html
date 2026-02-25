@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MúsicaOpos AI — Acceso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+</head>
+<body>
+
+  <div class="login-overlay">
+    <div class="login-card">
+      <!-- Decorative top glow -->
+      <div class="login-glow"></div>
+
+      <div class="login-logo">🎵</div>
+      <h1 class="login-title">MúsicaOpos AI</h1>
+      <p class="login-subtitle">Asistente para Oposiciones de Profesor de Música</p>
+
+      <form class="login-form" id="login-form" autocomplete="off">
+        <div class="login-field">
+          <label for="login-name">Tu nombre</label>
+          <input
+            type="text"
+            id="login-name"
+            placeholder="Ej: Alberto Fernández"
+            required
+            autocomplete="off"
+          >
+        </div>
+
+        <div class="login-field">
+          <label for="login-password">Contraseña de acceso</label>
+          <input
+            type="password"
+            id="login-password"
+            placeholder="Introduce la contraseña"
+            required
+            autocomplete="off"
+          >
+        </div>
+
+        <div class="login-error" id="login-error"></div>
+
+        <button type="submit" class="login-btn">
+          Acceder al asistente →
+        </button>
+      </form>
+
+      <p class="login-footer">Creado por Alberto Fernández · Powered by Llama 3.1</p>
+    </div>
+  </div>
+
+  <script>
+    const VALID_PASSWORD = 'musica2026';
+
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('login-name').value.trim();
+      const password = document.getElementById('login-password').value;
+      const errorEl = document.getElementById('login-error');
+
+      errorEl.textContent = '';
+
+      if (!name) {
+        errorEl.textContent = 'Por favor, introduce tu nombre.';
+        return;
+      }
+
+      if (password !== VALID_PASSWORD) {
+        errorEl.textContent = 'Contraseña incorrecta. Inténtalo de nuevo.';
+        document.getElementById('login-password').value = '';
+        document.getElementById('login-password').focus();
+        return;
+      }
+
+      // Store session
+      sessionStorage.setItem('musicaopos_user', name);
+      sessionStorage.setItem('musicaopos_auth', 'true');
+
+      // Redirect to chat
+      window.location.href = 'chat.html';
+    });
+
+    // If already authenticated, go to chat
+    if (sessionStorage.getItem('musicaopos_auth') === 'true') {
+      window.location.href = 'chat.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MúsicaOpos AI — Tu asistente de Oposiciones de Música</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/" class="navbar-brand">
+      <div class="logo-icon">🎵</div>
+      <span>OPOSICIONES · PROFESORA DE MÚSICA</span>
+    </a>
+    <ul class="navbar-links">
+      <li><a href="#about">Sobre el proyecto</a></li>
+      <li><a href="#stats">Estadísticas</a></li>
+      <li><a href="login.html" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; color: white;">Entrar al asistente →</a></li>
+    </ul>
+    <div class="nav-status">
+      <span class="dot"></span>
+      IA EN TIEMPO REAL
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        OPOSICIONES MÚSICA · LIVE
+      </div>
+
+      <h1>
+        Tu asistente para<br>
+        <span class="gradient-text">Oposiciones de Música</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Powered by tus apuntes (Y Llama 3.1). Prepara tu oposición de Profesora de Música con IA.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="login.html" class="btn btn-primary">
+          Entrar al asistente →
+        </a>
+        <a href="#about" class="btn btn-secondary">
+          Saber más
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ticker -->
+  <div class="ticker-container">
+    <div class="ticker-content">
+      <span class="ticker-item">DATO DIVERTIDO <span class="sep">·</span> La música es el lenguaje universal… pero el temario de oposiciones no lo es</span>
+      <span class="ticker-item"><span class="sep">·</span> Bach compuso más de 1000 obras y tú tienes que sabértelas todas para el examen</span>
+      <span class="ticker-item"><span class="sep">·</span> Una programación didáctica sin IA es como un piano sin teclas</span>
+      <span class="ticker-item"><span class="sep">·</span> Estudia con IA, aprueba con nota 🎶</span>
+      <span class="ticker-item"><span class="sep">·</span> Del pentagrama al aula: tu camino hacia la plaza empieza aquí</span>
+      <!-- Duplicate for seamless loop -->
+      <span class="ticker-item">DATO DIVERTIDO <span class="sep">·</span> La música es el lenguaje universal… pero el temario de oposiciones no lo es</span>
+      <span class="ticker-item"><span class="sep">·</span> Bach compuso más de 1000 obras y tú tienes que sabértelas todas para el examen</span>
+      <span class="ticker-item"><span class="sep">·</span> Una programación didáctica sin IA es como un piano sin teclas</span>
+      <span class="ticker-item"><span class="sep">·</span> Estudia con IA, aprueba con nota 🎶</span>
+      <span class="ticker-item"><span class="sep">·</span> Del pentagrama al aula: tu camino hacia la plaza empieza aquí</span>
+    </div>
+  </div>
+
+  <!-- Creator Card -->
+  <section class="professor-section" id="about">
+    <div class="professor-card">
+      <div class="professor-avatar">AF</div>
+      <div class="professor-name">Alberto Fernández</div>
+      <div class="professor-role">CREADOR · DATA SCIENTIST · AI ENGINEER</div>
+      <div class="professor-description">
+        <p>
+          Soy Alberto, un apasionado de la informática. He creado este asistente para ayudar a futuros profesores de música a preparar sus oposiciones de manera más eficiente y personalizada, utilizando la inteligencia artificial.
+        </p>
+      <ul class="professor-topics">
+        <li>Temario oficial de oposiciones</li>
+        <li>Programación didáctica</li>
+        <li>Historia de la música</li>
+        <li>Análisis musical y armonía</li>
+        <li>Pedagogía y didáctica musical</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats-section" id="stats">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="stat-chunks">—</div>
+        <div class="stat-label">Chunks</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">15</div>
+        <div class="stat-label">Temas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">24/7</div>
+        <div class="stat-label">Activo</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-online">—</div>
+        <div class="stat-label">Online</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Status -->
+  <div class="status-bar">
+    <div class="status-item">
+      <span class="dot-green"></span>
+      IA EN TIEMPO REAL
+    </div>
+    <div class="status-item">
+      <span class="dot-green"></span>
+      LIVE
+    </div>
+  </div>
+
+  <!-- Quote -->
+  <section class="quote-section">
+    <p class="quote-text">
+      "La IA es una herramienta poderosa que puede ayudarte a preparar tus oposiciones de manera más eficiente y personalizada."
+    </p>
+    <p class="quote-author">— Alberto Fernández</p>
+  </section>
+
+  <!-- Footer CTA -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h2>
+        Tu asistente para<br>
+        <span class="gradient-text">Oposiciones de Música</span>
+      </h2>
+      <p class="mt-1">Creado por Alberto Fernández · Powered by Llama 3.1</p>
+      <a href="login.html" class="btn btn-primary mt-2">Entrar al asistente →</a>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
