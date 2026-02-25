@@ -22,7 +22,5 @@ env/
 .DS_Store
 Thumbs.db
 
-# PDFs (too large for git, add your own)
-backend/data/pdfs/*.pdf
-
-# Do NOT ignore vectorstore/ — it's needed for deployment
+# Vectorstore (binary files — auto-generated on startup from PDFs)
+backend/vectorstore/
