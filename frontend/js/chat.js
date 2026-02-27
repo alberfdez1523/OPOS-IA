@@ -4,6 +4,7 @@
  */
 
 const API_BASE = '/api';
+const API_BASE_URL = "https://opos-ia-backend.onrender.com/";
 
 // ============================================
 // Auth Guard
@@ -189,7 +190,7 @@ async function sendMessage(question) {
   addTypingIndicator();
 
   try {
-    const response = await fetch(`${API_BASE}/ask/stream`, {
+    const response = await fetch(`${API_BASE_URL}/ask/stream`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ question, k: 5 }),
@@ -259,7 +260,7 @@ async function sendMessage(question) {
 
     // Fallback: try non-streaming endpoint
     try {
-      const fallbackRes = await fetch(`${API_BASE}/ask`, {
+      const fallbackRes = await fetch(`${API_BASE_URL}/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question, k: 5 }),
@@ -299,7 +300,7 @@ async function uploadFile(file) {
   try {
     addMessage('assistant', `📤 Subiendo **${file.name}**...`);
 
-    const res = await fetch(`${API_BASE}/upload`, {
+    const res = await fetch(`${API_BASE_URL}/upload`, {
       method: 'POST',
       body: formData,
     });
@@ -320,7 +321,7 @@ async function ingestDocuments() {
   try {
     addMessage('assistant', '🔄 Indexando documentos... Esto puede tardar unos minutos.');
 
-    const res = await fetch(`${API_BASE}/ingest`, { method: 'POST' });
+    const res = await fetch(`${API_BASE_URL}/ingest`, { method: 'POST' });
 
     if (res.ok) {
       const data = await res.json();
@@ -340,7 +341,7 @@ async function ingestDocuments() {
 // ============================================
 async function loadSidebarStats() {
   try {
-    const res = await fetch(`${API_BASE}/stats`);
+    const res = await fetch(`${API_BASE_URL}/stats`);
     if (res.ok) {
       const data = await res.json();
       const chunksEl = document.getElementById('sidebar-chunks');
