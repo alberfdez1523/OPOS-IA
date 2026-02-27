@@ -26,10 +26,14 @@ app.add_middleware(
 # API routes
 app.include_router(router, prefix="/api")
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 # Serve frontend
-frontend_path = Path(__file__).parent.parent.parent / "frontend"
-if frontend_path.exists():
-    app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
+#frontend_path = Path(__file__).parent.parent.parent / "frontend"
+#if frontend_path.exists():
+#    app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
 
 
 if __name__ == "__main__":
