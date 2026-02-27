@@ -4,7 +4,7 @@
  */
 
 const API_BASE = '/api';
-const API_BASE_URL = "https://opos-ia-backend.onrender.com/";
+const API_BASE_URL = "https://opos-ia-backend.onrender.com";
 
 // ============================================
 // Auth Guard
