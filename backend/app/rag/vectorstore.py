@@ -58,6 +58,32 @@ def add_to_vectorstore(documents: list) -> FAISS:
     return _vectorstore
 
 
+def get_chunks_by_source(pdf_name: str) -> list[dict]:
+    """Get ALL chunks from a specific PDF by filtering the docstore metadata.
+    
+    This is the correct way to retrieve topic-specific content — NOT similarity search.
+    Returns chunks sorted by page number for coherent context.
+    """
+    vs = get_vectorstore()
+    if vs is None:
+        return []
+
+    chunks = []
+    for doc_id, doc in vs.docstore._dict.items():
+        source = doc.metadata.get("source", "")
+        # Match by filename (handle both / and \ path separators)
+        source_filename = source.replace("\\", "/").split("/")[-1]
+        if source_filename == pdf_name or pdf_name in source:
+            chunks.append({
+                "content": doc.page_content,
+                "metadata": doc.metadata,
+            })
+
+    # Sort by page number for coherent ordering
+    chunks.sort(key=lambda c: c["metadata"].get("page", 0))
+    return chunks
+
+
 def get_chunk_count() -> int:
     """Return the number of chunks in the vector store."""
     vs = get_vectorstore()

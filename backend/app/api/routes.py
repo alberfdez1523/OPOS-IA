@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from app.config import settings
 from app.rag.retriever import retrieve_relevant_chunks
 from app.rag.llm import generate_response, generate_response_stream, generate_test_questions, generate_summary
-from app.rag.vectorstore import get_chunk_count, get_vectorstore
+from app.rag.vectorstore import get_chunk_count, get_vectorstore, get_chunks_by_source
 from app.ingestion.pdf_loader import ingest_pdfs
 
 router = APIRouter()
@@ -21,7 +21,7 @@ router = APIRouter()
 
 class QuestionRequest(BaseModel):
     question: str
-    k: int = 5
+    k: int = 20
 
 
 class QuestionResponse(BaseModel):
@@ -184,32 +184,36 @@ async def generate_test(request: TestRequest):
     if request.difficulty not in ("medio", "dificil"):
         raise HTTPException(status_code=400, detail="Dificultad debe ser 'medio' o 'dificil'")
 
-    # Get chunks that come from the selected PDF
-    vs = get_vectorstore()
-    if vs is None:
-        raise HTTPException(status_code=404, detail="No hay vector store. Indexa los documentos primero.")
+    # Get ALL chunks from this specific PDF by filtering the docstore
+    pdf_chunks = get_chunks_by_source(request.pdf_name)
 
-    # Retrieve all chunks and filter by PDF source
-    all_docs = vs.similarity_search(request.pdf_name.replace(".pdf", ""), k=40)
-    pdf_chunks = []
-    for doc in all_docs:
-        source = doc.metadata.get("source", "")
-        if request.pdf_name in source or request.pdf_name.replace(".pdf", "") in source:
-            pdf_chunks.append({
-                "content": doc.page_content,
-                "metadata": doc.metadata,
-            })
+    if not pdf_chunks:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No se encontraron chunks para '{request.pdf_name}'. Asegúrate de que el PDF está indexado.",
+        )
 
-    # If not enough specific chunks, use all retrieved
-    if len(pdf_chunks) < 5:
-        pdf_chunks = [{"content": doc.page_content, "metadata": doc.metadata} for doc in all_docs]
+    topic_name = request.pdf_name.replace(".pdf", "").strip()
 
     try:
         result = await generate_test_questions(
             pdf_chunks,
+            topic_name=topic_name,
             difficulty=request.difficulty,
             num_questions=request.num_questions,
         )
+
+        # Add source info to the response so the frontend can show it
+        pages_used = sorted(set(
+            c["metadata"].get("page", 0) for c in pdf_chunks
+        ))
+        source_file = request.pdf_name
+        result["sources"] = {
+            "file": source_file,
+            "pages": pages_used,
+            "total_chunks": len(pdf_chunks),
+        }
+
         return {"status": "ok", "test": result}
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"Error generando test: {str(e)}")
@@ -224,27 +228,19 @@ class SummaryRequest(BaseModel):
 @router.post("/generate-summary")
 async def generate_summary_endpoint(request: SummaryRequest):
     """Generate a summary from a specific PDF using the LLM."""
-    vs = get_vectorstore()
-    if vs is None:
-        raise HTTPException(status_code=404, detail="No hay vector store. Indexa los documentos primero.")
+    # Get ALL chunks from this specific PDF by filtering the docstore
+    pdf_chunks = get_chunks_by_source(request.pdf_name)
 
-    # Retrieve chunks from the selected PDF
-    all_docs = vs.similarity_search(request.pdf_name.replace(".pdf", ""), k=40)
-    pdf_chunks = []
-    for doc in all_docs:
-        source = doc.metadata.get("source", "")
-        if request.pdf_name in source or request.pdf_name.replace(".pdf", "") in source:
-            pdf_chunks.append({
-                "content": doc.page_content,
-                "metadata": doc.metadata,
-            })
+    if not pdf_chunks:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No se encontraron chunks para '{request.pdf_name}'. Asegúrate de que el PDF está indexado.",
+        )
 
-    # If not enough specific chunks, use all retrieved
-    if len(pdf_chunks) < 5:
-        pdf_chunks = [{"content": doc.page_content, "metadata": doc.metadata} for doc in all_docs]
+    topic_name = request.pdf_name.replace(".pdf", "").strip()
 
     try:
-        summary_text = await generate_summary(pdf_chunks)
+        summary_text = await generate_summary(pdf_chunks, topic_name=topic_name)
         return {"status": "ok", "summary": summary_text, "pdf_name": request.pdf_name}
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"Error generando resumen: {str(e)}")

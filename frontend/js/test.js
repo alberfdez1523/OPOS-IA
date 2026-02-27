@@ -203,12 +203,25 @@ function renderQuestion() {
   let explanationHtml = '';
   if (answered || isReviewMode) {
     const isCorrect = userAnswers[currentQuestion] === q.correct;
+
+    // Source info
+    let sourceHtml = '';
+    if (testData.sources) {
+      const src = testData.sources;
+      sourceHtml = `
+        <div class="explanation-source" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; color: var(--text-muted);">
+          📄 Fuente: <strong>${src.file}</strong> · Páginas: ${src.pages.map(p => p + 1).join(', ')} · ${src.total_chunks} fragmentos analizados
+        </div>
+      `;
+    }
+
     explanationHtml = `
       <div class="test-explanation ${isCorrect ? 'correct' : 'incorrect'}">
         <div class="explanation-header">
           ${isCorrect ? '✅ ¡Correcto!' : '❌ Incorrecto — La respuesta correcta es ' + q.correct}
         </div>
         <div class="explanation-text">${q.explanation}</div>
+        ${sourceHtml}
       </div>
     `;
   }
