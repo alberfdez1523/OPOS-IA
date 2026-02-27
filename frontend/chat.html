@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=5">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
   <!-- Markdown rendering -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -24,14 +24,14 @@
         <div class="logo-icon">🎵</div>
         <div>
           <h2>MúsicaOpos AI</h2>
-          <p>RAG · Llama 3.3</p>
+          <p>RAG · Llama 3.1</p>
         </div>
       </div>
 
       <div class="sidebar-stats">
         <div class="sidebar-stat">
           <span class="label">Modelo</span>
-          <span class="value">Llama 3.3</span>
+          <span class="value">Llama 3.1</span>
         </div>
         <div class="sidebar-stat">
           <span class="label">Chunks</span>
@@ -44,23 +44,17 @@
       </div>
 
       <div class="sidebar-topics">
-        <h3>Temas disponibles</h3>
+        <h3>Navegación</h3>
         <ul class="topic-list">
-          <li data-q="¿Cuáles son las partes y fases del proceso de oposición de Música en España?"><span class="icon">📋</span> Proceso de oposición</li>
-          <li data-q="¿Cómo se elabora una programación didáctica de Música para oposiciones?"><span class="icon">📝</span> Programación didáctica</li>
-          <li data-q="¿Cómo se prepara y defiende una unidad didáctica en la oposición?"><span class="icon">🎯</span> Unidades didácticas</li>
-          <li data-q="Explica los principales métodos de pedagogía musical: Orff, Kodály, Dalcroze y Willems"><span class="icon">🎓</span> Pedagogía musical</li>
-          <li data-q="¿Cuáles son los elementos del lenguaje musical y cómo se enseñan?"><span class="icon">🎼</span> Lenguaje musical</li>
-          <li data-q="Describe la evolución de la música occidental desde la Edad Media hasta el Barroco"><span class="icon">🎻</span> Historia de la música I</li>
-          <li data-q="¿Qué características tienen el Clasicismo, Romanticismo y las vanguardias del siglo XX?"><span class="icon">🎹</span> Historia de la música II</li>
-          <li data-q="¿Cuál es el marco legislativo y curricular de la música en la ESO y Bachillerato según la LOMLOE?"><span class="icon">📖</span> Legislación y currículo</li>
-          <li data-q="Explica la clasificación de los instrumentos musicales y la organología"><span class="icon">🎺</span> Organología</li>
-          <li data-q="¿Cuáles son los fundamentos de la armonía tonal y el análisis musical?"><span class="icon">🎵</span> Armonía y análisis</li>
-          <li data-q="¿Qué es la música popular urbana y el folclore musical español?"><span class="icon">🎶</span> Música popular y folclore</li>
-          <li data-q="¿Cómo se trabaja la audición activa y la escucha en el aula de música?"><span class="icon">🎧</span> Audición y escucha</li>
-          <li data-q="¿Qué papel juegan las TIC y las nuevas tecnologías en la educación musical?"><span class="icon">💻</span> TIC en música</li>
-          <li data-q="¿Cómo se evalúa por competencias en la asignatura de música según la LOMLOE?"><span class="icon">✅</span> Evaluación competencial</li>
-          <li data-q="¿Qué características tiene la música escénica: ópera, zarzuela y ballet?"><span class="icon">🎭</span> Música escénica</li>
+          <li class="active-nav">
+            <span class="icon">💬</span> Chat con IA
+          </li>
+          <li onclick="window.location.href='test.html'" style="cursor:pointer;">
+            <span class="icon">📝</span> Generador de Tests
+          </li>
+          <li onclick="window.location.href='summary.html'" style="cursor:pointer;">
+            <span class="icon">📄</span> Resumen de Tema
+          </li>
         </ul>
       </div>
 
@@ -138,12 +132,12 @@
           </button>
         </div>
         <div class="input-hint">
-          Creado por Alberto Fernández · Powered by RAG + Llama 3.3
+          Creado por Alberto Fernández · Powered by RAG + Llama 3.1
         </div>
       </div>
     </main>
   </div>
 
-  <script src="js/chat.js"></script>
+  <script src="js/chat.js?v=5"></script>
 </body>
 </html>

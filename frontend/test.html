@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MúsicaOpos AI — Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=5">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+</head>
+<body>
+
+  <div class="chat-layout">
+    <!-- Sidebar (mismo que en chat) -->
+    <aside class="chat-sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">🎵</div>
+        <div>
+          <h2>MúsicaOpos AI</h2>
+          <p>RAG · Llama 3.1</p>
+        </div>
+      </div>
+
+      <div class="sidebar-stats">
+        <div class="sidebar-stat">
+          <span class="label">Modelo</span>
+          <span class="value">Llama 3.1</span>
+        </div>
+        <div class="sidebar-stat">
+          <span class="label">Chunks</span>
+          <span class="value" id="sidebar-chunks">—</span>
+        </div>
+        <div class="sidebar-stat">
+          <span class="label">Estado</span>
+          <span class="value" style="color: var(--green);" id="sidebar-status">● Activo</span>
+        </div>
+      </div>
+
+      <div class="sidebar-topics">
+        <h3>Navegación</h3>
+        <ul class="topic-list">
+          <li onclick="window.location.href='chat.html'" style="cursor:pointer;">
+            <span class="icon">💬</span> Chat con IA
+          </li>
+          <li class="active-nav">
+            <span class="icon">📝</span> Generador de Tests
+          </li>
+          <li onclick="window.location.href='summary.html'" style="cursor:pointer;">
+            <span class="icon">📄</span> Resumen de Tema
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <a href="chat.html" class="sidebar-link-btn">
+          ← Volver al Chat
+        </a>
+      </div>
+    </aside>
+
+    <!-- Test Main Content -->
+    <main class="chat-main">
+      <!-- Top Bar -->
+      <div class="chat-topbar">
+        <div class="chat-topbar-left">
+          <a href="chat.html" style="color: var(--text-muted); font-size: 1.2rem;">←</a>
+          <h1>Generador de Tests</h1>
+          <div class="model-badge">
+            <span style="width: 6px; height: 6px; background: var(--green); border-radius: 50%; display: inline-block;"></span>
+            Llama 3.1 · Test
+          </div>
+        </div>
+        <div class="chat-topbar-right">
+          <span class="dot"></span>
+          MODO TEST
+        </div>
+      </div>
+
+      <!-- Test Content Area -->
+      <div class="test-page-content">
+
+        <!-- Step 1: Configuration -->
+        <div class="test-config-page" id="test-config">
+          <div class="test-config-hero">
+            <div class="test-config-icon">📝</div>
+            <h2>Genera un test de oposiciones</h2>
+            <p>Selecciona un tema y la dificultad para crear 10 preguntas tipo test con corrección automática y explicaciones.</p>
+          </div>
+
+          <div class="test-config-form">
+            <div class="test-field">
+              <label>Selecciona un tema (PDF)</label>
+              <select id="test-pdf-select">
+                <option value="">Cargando PDFs...</option>
+              </select>
+            </div>
+            <div class="test-field">
+              <label>Dificultad</label>
+              <div class="difficulty-selector">
+                <button class="diff-btn active" data-diff="medio" id="diff-medio">
+                  <span class="diff-icon">⚡</span>
+                  <span class="diff-label">Medio</span>
+                  <span class="diff-desc">Conceptos clave</span>
+                </button>
+                <button class="diff-btn" data-diff="dificil" id="diff-dificil">
+                  <span class="diff-icon">🔥</span>
+                  <span class="diff-label">Difícil</span>
+                  <span class="diff-desc">Detalles y matices</span>
+                </button>
+              </div>
+            </div>
+            <button class="test-generate-btn" id="test-generate-btn">
+              🚀 Generar 10 preguntas
+            </button>
+          </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="test-loading hidden" id="test-loading">
+          <div class="test-spinner"></div>
+          <p>Generando preguntas con Llama 3.1...</p>
+          <p class="test-loading-sub">Analizando el temario y creando preguntas</p>
+        </div>
+
+        <!-- Step 2: Questions -->
+        <div class="test-questions-page hidden" id="test-questions">
+          <div class="test-progress-bar">
+            <div class="test-progress-fill" id="test-progress-fill"></div>
+          </div>
+          <div class="test-score-header">
+            <span id="test-question-counter">Pregunta 1 de 10</span>
+            <span id="test-score">Aciertos: 0/0</span>
+          </div>
+          <div id="test-question-container"></div>
+          <div class="test-nav-buttons">
+            <button class="test-nav-btn" id="test-prev-btn" disabled>← Anterior</button>
+            <button class="test-nav-btn primary" id="test-next-btn" disabled>Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Results -->
+        <div class="test-results-page hidden" id="test-results">
+          <div class="test-results-score">
+            <div class="test-results-icon" id="test-results-icon">🎉</div>
+            <h3 id="test-results-title">¡Test completado!</h3>
+            <div class="test-results-number" id="test-results-number">0/10</div>
+            <p id="test-results-msg"></p>
+          </div>
+          <div class="test-results-actions">
+            <button class="test-nav-btn" id="test-review-btn">📋 Revisar respuestas</button>
+            <button class="test-generate-btn" id="test-retry-btn">🔄 Nuevo test</button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="js/test.js?v=4"></script>
+</body>
+</html>

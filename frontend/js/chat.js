@@ -63,14 +63,17 @@ function buildSourcesHtml(sources) {
   }).join('');
 
   return `
-    <div class="sources-panel">
-      <div class="sources-panel-header">
+    <div class="sources-panel collapsed">
+      <div class="sources-panel-header" onclick="this.parentElement.classList.toggle('collapsed')">
         <span class="sources-panel-icon">📚</span>
         <span class="sources-panel-title">Fuentes consultadas</span>
         <span class="sources-panel-count">${sources.length} fuente${sources.length > 1 ? 's' : ''}</span>
+        <span class="sources-panel-toggle">▾</span>
       </div>
-      <div class="sources-panel-cards">
-        ${cards}
+      <div class="sources-panel-body">
+        <div class="sources-panel-cards">
+          ${cards}
+        </div>
       </div>
     </div>
   `;
@@ -378,13 +381,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Suggested questions
   document.querySelectorAll('.suggested-q').forEach(el => {
-    el.addEventListener('click', () => {
-      sendMessage(el.dataset.q);
-    });
-  });
-
-  // Topic list clicks
-  document.querySelectorAll('.topic-list li').forEach(el => {
     el.addEventListener('click', () => {
       sendMessage(el.dataset.q);
     });

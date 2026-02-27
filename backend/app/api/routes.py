@@ -1,6 +1,7 @@
 """API routes for the RAG chatbot."""
 
 import os
+import json
 import shutil
 from pathlib import Path
 from fastapi import APIRouter, HTTPException, UploadFile, File
@@ -9,8 +10,8 @@ from pydantic import BaseModel
 
 from app.config import settings
 from app.rag.retriever import retrieve_relevant_chunks
-from app.rag.llm import generate_response, generate_response_stream
-from app.rag.vectorstore import get_chunk_count
+from app.rag.llm import generate_response, generate_response_stream, generate_test_questions, generate_summary
+from app.rag.vectorstore import get_chunk_count, get_vectorstore
 from app.ingestion.pdf_loader import ingest_pdfs
 
 router = APIRouter()
@@ -157,3 +158,93 @@ async def upload_pdf(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, f)
 
     return {"status": "uploaded", "filename": file.filename, "path": str(file_path)}
+
+
+# --- Test Generation ---
+
+class TestRequest(BaseModel):
+    pdf_name: str
+    difficulty: str  # "medio" or "dificil"
+    num_questions: int = 10
+
+
+@router.get("/pdfs")
+async def list_pdfs():
+    """List available PDF files."""
+    pdf_dir = Path(settings.PDF_PATH)
+    if not pdf_dir.exists():
+        return {"pdfs": []}
+    pdf_files = [f.name for f in pdf_dir.glob("*.pdf")]
+    return {"pdfs": sorted(pdf_files)}
+
+
+@router.post("/generate-test")
+async def generate_test(request: TestRequest):
+    """Generate a test with questions from a specific PDF using the LLM."""
+    if request.difficulty not in ("medio", "dificil"):
+        raise HTTPException(status_code=400, detail="Dificultad debe ser 'medio' o 'dificil'")
+
+    # Get chunks that come from the selected PDF
+    vs = get_vectorstore()
+    if vs is None:
+        raise HTTPException(status_code=404, detail="No hay vector store. Indexa los documentos primero.")
+
+    # Retrieve all chunks and filter by PDF source
+    all_docs = vs.similarity_search(request.pdf_name.replace(".pdf", ""), k=40)
+    pdf_chunks = []
+    for doc in all_docs:
+        source = doc.metadata.get("source", "")
+        if request.pdf_name in source or request.pdf_name.replace(".pdf", "") in source:
+            pdf_chunks.append({
+                "content": doc.page_content,
+                "metadata": doc.metadata,
+            })
+
+    # If not enough specific chunks, use all retrieved
+    if len(pdf_chunks) < 5:
+        pdf_chunks = [{"content": doc.page_content, "metadata": doc.metadata} for doc in all_docs]
+
+    try:
+        result = await generate_test_questions(
+            pdf_chunks,
+            difficulty=request.difficulty,
+            num_questions=request.num_questions,
+        )
+        return {"status": "ok", "test": result}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Error generando test: {str(e)}")
+
+
+# --- Summary Generation ---
+
+class SummaryRequest(BaseModel):
+    pdf_name: str
+
+
+@router.post("/generate-summary")
+async def generate_summary_endpoint(request: SummaryRequest):
+    """Generate a summary from a specific PDF using the LLM."""
+    vs = get_vectorstore()
+    if vs is None:
+        raise HTTPException(status_code=404, detail="No hay vector store. Indexa los documentos primero.")
+
+    # Retrieve chunks from the selected PDF
+    all_docs = vs.similarity_search(request.pdf_name.replace(".pdf", ""), k=40)
+    pdf_chunks = []
+    for doc in all_docs:
+        source = doc.metadata.get("source", "")
+        if request.pdf_name in source or request.pdf_name.replace(".pdf", "") in source:
+            pdf_chunks.append({
+                "content": doc.page_content,
+                "metadata": doc.metadata,
+            })
+
+    # If not enough specific chunks, use all retrieved
+    if len(pdf_chunks) < 5:
+        pdf_chunks = [{"content": doc.page_content, "metadata": doc.metadata} for doc in all_docs]
+
+    try:
+        summary_text = await generate_summary(pdf_chunks)
+        return {"status": "ok", "summary": summary_text, "pdf_name": request.pdf_name}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Error generando resumen: {str(e)}")

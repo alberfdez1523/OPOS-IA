@@ -8,7 +8,7 @@ class Settings(BaseSettings):
 
     # Ollama (local)
     OLLAMA_BASE_URL: str = "http://localhost:11434"
-    OLLAMA_MODEL: str = "llama3.3"
+    OLLAMA_MODEL: str = "llama3.1"
 
     # Groq (cloud - free tier)
     GROQ_API_KEY: str = ""

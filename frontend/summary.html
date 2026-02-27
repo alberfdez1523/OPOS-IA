@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MúsicaOpos AI — Resumen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=5">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+  <!-- Markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+</head>
+<body>
+
+  <div class="chat-layout">
+    <!-- Sidebar -->
+    <aside class="chat-sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">🎵</div>
+        <div>
+          <h2>MúsicaOpos AI</h2>
+          <p>RAG · Llama 3.1</p>
+        </div>
+      </div>
+
+      <div class="sidebar-stats">
+        <div class="sidebar-stat">
+          <span class="label">Modelo</span>
+          <span class="value">Llama 3.1</span>
+        </div>
+        <div class="sidebar-stat">
+          <span class="label">Chunks</span>
+          <span class="value" id="sidebar-chunks">—</span>
+        </div>
+        <div class="sidebar-stat">
+          <span class="label">Estado</span>
+          <span class="value" style="color: var(--green);" id="sidebar-status">● Activo</span>
+        </div>
+      </div>
+
+      <div class="sidebar-topics">
+        <h3>Navegación</h3>
+        <ul class="topic-list">
+          <li onclick="window.location.href='chat.html'" style="cursor:pointer;">
+            <span class="icon">💬</span> Chat con IA
+          </li>
+          <li onclick="window.location.href='test.html'" style="cursor:pointer;">
+            <span class="icon">📝</span> Generador de Tests
+          </li>
+          <li class="active-nav">
+            <span class="icon">📄</span> Resumen de Tema
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <a href="chat.html" class="sidebar-link-btn">
+          ← Volver al Chat
+        </a>
+      </div>
+    </aside>
+
+    <!-- Summary Main Content -->
+    <main class="chat-main">
+      <!-- Top Bar -->
+      <div class="chat-topbar">
+        <div class="chat-topbar-left">
+          <a href="chat.html" style="color: var(--text-muted); font-size: 1.2rem;">←</a>
+          <h1>Resumen de Tema</h1>
+          <div class="model-badge">
+            <span style="width: 6px; height: 6px; background: var(--green); border-radius: 50%; display: inline-block;"></span>
+            Llama 3.1 · Resumen
+          </div>
+        </div>
+        <div class="chat-topbar-right">
+          <span class="dot"></span>
+          MODO RESUMEN
+        </div>
+      </div>
+
+      <!-- Summary Content Area -->
+      <div class="summary-page-content">
+
+        <!-- Step 1: Configuration -->
+        <div class="summary-config-page" id="summary-config">
+          <div class="summary-config-hero">
+            <div class="summary-config-icon">📄</div>
+            <h2>Genera un resumen del temario</h2>
+            <p>Selecciona un tema y la IA creará un resumen completo y estructurado que podrás descargar en PDF.</p>
+          </div>
+
+          <div class="summary-config-form">
+            <div class="test-field">
+              <label>Selecciona un tema (PDF)</label>
+              <select id="summary-pdf-select">
+                <option value="">Cargando PDFs...</option>
+              </select>
+            </div>
+            <button class="test-generate-btn" id="summary-generate-btn">
+              🚀 Generar resumen
+            </button>
+          </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="test-loading hidden" id="summary-loading">
+          <div class="test-spinner"></div>
+          <p>Generando resumen con Llama 3.1...</p>
+          <p class="test-loading-sub">Analizando el temario y estructurando el contenido</p>
+        </div>
+
+        <!-- Step 2: Summary Result -->
+        <div class="summary-result-page hidden" id="summary-result">
+          <div class="summary-result-header">
+            <div class="summary-result-title">
+              <span class="summary-result-icon">📄</span>
+              <h3 id="summary-title">Resumen</h3>
+            </div>
+            <div class="summary-result-actions">
+              <button class="test-nav-btn primary" id="summary-download-btn">
+                📥 Descargar PDF
+              </button>
+              <button class="test-nav-btn" id="summary-new-btn">
+                🔄 Nuevo resumen
+              </button>
+            </div>
+          </div>
+          <div class="summary-content" id="summary-content">
+            <!-- Rendered markdown goes here -->
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="js/summary.js?v=5"></script>
+</body>
+</html>

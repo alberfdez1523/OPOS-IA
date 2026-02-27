@@ -14,6 +14,22 @@ app = FastAPI(
     version="1.0.0",
 )
 
+
+@app.on_event("startup")
+async def startup_preload():
+    """Pre-load embeddings and vectorstore on startup so the app is ready instantly."""
+    import asyncio
+    from app.rag.embeddings import get_embeddings
+    from app.rag.vectorstore import get_vectorstore
+    print("🚀 Pre-loading embeddings model...")
+    get_embeddings()
+    print("🚀 Pre-loading FAISS vectorstore...")
+    vs = get_vectorstore()
+    if vs:
+        print(f"✅ Vectorstore loaded: {vs.index.ntotal} chunks ready")
+    else:
+        print("⚠️ No vectorstore found. Run /api/ingest first.")
+
 # CORS
 app.add_middleware(
     CORSMiddleware,
