@@ -8,11 +8,11 @@ class Settings(BaseSettings):
 
     # Ollama (local)
     OLLAMA_BASE_URL: str = "http://localhost:11434"
-    OLLAMA_MODEL: str = "llama3.1"
+    OLLAMA_MODEL: str = "llama3.3"
 
     # Groq (cloud - free tier)
     GROQ_API_KEY: str = ""
-    GROQ_MODEL: str = "llama-3.1-70b-versatile"
+    GROQ_MODEL: str = "llama-3.3-70b-versatile"
 
     # Embeddings
     EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
