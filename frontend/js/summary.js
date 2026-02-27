@@ -3,7 +3,7 @@
  * Standalone summary generator with client-side PDF export
  */
 
-const API = 'http://localhost:8000/api';
+const API = '/api';
 
 // ============================================
 // State

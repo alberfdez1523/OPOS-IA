@@ -3,7 +3,7 @@
  * Standalone test generator page
  */
 
-const TEST_API = 'http://localhost:8000/api';
+const TEST_API = '/api';
 
 // ============================================
 // State

@@ -3,7 +3,7 @@
  * Animated chart, stats loading, interactions
  */
 
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = '/api';
 
 // ============================================
 // Animated Time Series Chart (Canvas)

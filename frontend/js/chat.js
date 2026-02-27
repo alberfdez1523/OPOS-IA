@@ -4,7 +4,7 @@
  */
 
 const API_BASE = '/api';
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = "";
 
 // ============================================
 // Auth Guard
