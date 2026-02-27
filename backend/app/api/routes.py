@@ -46,9 +46,10 @@ class IngestResponse(BaseModel):
 async def get_stats():
     """Get system statistics."""
     chunk_count = get_chunk_count()
+    model_name = settings.GROQ_MODEL if settings.LLM_PROVIDER == "groq" else settings.OLLAMA_MODEL
     return StatsResponse(
         chunks=chunk_count,
-        model=settings.OLLAMA_MODEL,
+        model=model_name,
         status="active" if chunk_count > 0 else "no_data",
     )
 
